@@ -127,22 +127,18 @@
                                                 </svg>
                                             </button>
                                         </form>
-
                                         <span>
-                                            <form id="quantity-form" action="{{ route('setQuantity', $item->id) }}"
-                                                method="POST">
+                                            <form id="quantity-form-{{ $item->id }}" action="{{ route('setQuantity', $item->id) }}" method="POST">
                                                 @csrf
-                                                <input type="number" value="{{ $item->quantity }}" name="quantity"
-                                                    id="quantity" min="1"
-                                                    class="block pr-4 w-10 rounded p-0.5 appearance-none outline-none border-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />
+                                                <input type="number" value="{{ $item->quantity }}" name="quantity" id="quantity-{{ $item->id }}" min="1" class="block pr-4 w-10 rounded p-0.5 appearance-none outline-none border-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />
                                             </form>
                                         </span>
                                         <script>
-                                            document.getElementById('quantity').addEventListener('blur', function() {
-                                                document.getElementById('quantity-form').submit();
+                                            document.getElementById('quantity-{{ $item->id }}').addEventListener('blur', function() {
+                                                document.getElementById('quantity-form-{{ $item->id }}').submit();
                                             });
                                         </script>
-
+                                        
                                         <form action="{{ route('cart.increase', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
@@ -156,19 +152,17 @@
                                         </form>
                                     </td>
                                     <td class="px-4 py-4 ">
-                                        <form id="price-form" action="{{ route('setPrice', $item->id) }}"
-                                            method="POST">
+                                        <form id="price-form-{{ $item->id }}" action="{{ route('setPrice', $item->id) }}" method="POST">
                                             @csrf
-                                            <input type="number" value="{{ $item->unitPrice }}" name="price"
-                                                id="price" min="1" placeholder="نرخی مادە"
-                                                class="mx-auto w-20 rounded py-0.5 px-1 appearance-none   text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />د.ع
+                                            <input type="number" value="{{ $item->unitPrice }}" name="price" id="price-{{ $item->id }}" min="1" placeholder="نرخی مادە" class="mx-auto w-20 rounded py-0.5 px-1 appearance-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />د.ع
                                         </form>
                                         <script>
-                                            document.getElementById('price').addEventListener('blur', function() {
-                                                document.getElementById('price-form').submit();
+                                            document.getElementById('price-{{ $item->id }}').addEventListener('blur', function() {
+                                                document.getElementById('price-form-{{ $item->id }}').submit();
                                             });
                                         </script>
                                     </td>
+                                    
 
                                     <td class="px-4 py-4 flex justify-between ">
                                         {{ number_format($item->quantity * $item->unitPrice, 0, '.', ',') }}
@@ -198,7 +192,7 @@
                 </table>
             </div>
             <div class=" pt-5 text-center">
-                <form action="{{ route('cart.pay') }}"
+                <form action="{{ route('cart.addInvoice') }}"
                     class="grid md:grid-cols-2 grid-cols-1 mb-5 md:mb-0 items-center justify-center space-x-4 space-x-reverse flex-wrap"
                     method="POST">
                     @csrf

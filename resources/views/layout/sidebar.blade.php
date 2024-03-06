@@ -23,7 +23,7 @@
 
 <body class="bg-gray-200 dark:bg-gray-900 h-screen overflow-auto font-kurdish">
     <nav class="fixed top-0 z-50 w-full bg-gray-100 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <div class="px-3 py-3 lg:px-5 lg:pr-3">
+        <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start">
                     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
@@ -39,15 +39,17 @@
                     </button>
                     <div>
                         <a href="{{ route('dashboard') }}"
-                            class="text-gray-500 dark:text-gray-400  sm:text-xl truncate text-sm font-semibold sm:ml-5 text-center"><span
-                                class="text-indigo-600 dark:text-indigo-500">Daily</span> Supermarket.</a>
+                            class="text-gray-500 dark:text-gray-400  sm:text-xl truncate text-sm font-semibold sm:mr-5 text-center">
+                            سیستمی بەڕێوەبردنی
+                            <span class="text-indigo-600 dark:text-indigo-500">خەرجی</span>
+                        </a>
                     </div>
-                    <div class="divide-x hidden sm:inline-block  divide-indigo-400 space-x-2 ml-20">
+                    <div class="divide-x divide-x-reverse hidden sm:inline-block  divide-indigo-400 space-x-2 mr-20">
                         <div class=" dark:text-gray-500 text-gray-600 sm:inline-block  text-lg font-semibold">
                             <span id="date"></span>
                         </div>
                         <div class=" dark:text-gray-500 text-gray-600 sm:inline-block  text-lg font-semibold">
-                            <span id="time" class="ml-2.5"></span>
+                            <span id="time" class="mr-2.5"></span>
                         </div>
                     </div>
                 </div>
@@ -89,9 +91,6 @@
                         </button>
                         <button onclick="toggleFullscreen()" id="toggleFullscreen" class="bg-indigo-500 rounded-md"><i
                                 class="fas fa-maximize px-2.5 py-2.5 dark:text-gray-800 text-white text-lg"></i></button>
-                        <a href="{{ route('dashboard') }}" class=" bg-indigo-500 rounded-md" title="POS">
-                            <i class="fa-solid fa-cart-plus px-2.5 py-2.5 dark:text-gray-800 text-white text-lg"></i>
-                        </a>
                         <div>
                             <button type="button"
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -151,64 +150,69 @@
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
-                @guest
-                    <li>
-                        <a href="{{ route('login') }}"
-                            class="flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
-                            <i
-                                class="fa-solid fa-arrow-right-to-bracket flex-shrink-0 text-md text-gray-500 transition duration-75 group-hover:text-yellow-400 dark:text-gray-400 dark:group-hover:text-yellow-400"></i>
-                            <span class="flex-1 ml-3 mr-3 whitespace-nowrap">Login To View</span>
-                        </a>
-                    </li>
-                @endguest
-                @auth
 
-                    <li>
-                        <a href="{{ route('dashboard') }}"
-                            class="{{ Route::currentRouteName() == 'dashboard' ? 'bg-indigo-800 text-gray-300 ' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
-                            <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ Route::currentRouteName() == 'dashboard' ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"
-                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                viewBox="0 0 22 21">
-                                <path
-                                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                                <path
-                                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                            </svg>
-                            <span class="ml-3 mr-3">Dashboard</span>
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ route('dashboard') }}"
+                        class="{{ Route::currentRouteName() == 'dashboard' ? 'bg-indigo-800 text-gray-300 ' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                        <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ Route::currentRouteName() == 'dashboard' ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 22 21">
+                            <path
+                                d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                            <path
+                                d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                        </svg>
+                        <span class="mr-3 ">داشبۆرد</span>
+                    </a>
+                </li>
 
 
-                    <li>
-                        <a href="{{ route('users.index') }}"
-                            class="{{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
-                            <i
-                                class="fa-solid fa-user-shield text-xl text-gray-500 transition duration-75 group-hover:text-yellow-400 dark:text-gray-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                            <span class="flex-1 ml-3 mr-3 whitespace-nowrap">Users</span>
-                            {{-- <span
-                        class="inline-flex items-center justify-center px-2 ml-3 mr-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-indigo-800 dark:text-gray-300">Pro</span> --}}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('material.index') }}"
+                <li>
+                    <a href="{{ route('users.index') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                        <i
+                            class="fa-solid fa-user-shield text-xl text-gray-500 transition duration-75 group-hover:text-yellow-400 dark:text-gray-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                        <span class="flex-1 mr-3  whitespace-nowrap">بەکارهێنەران</span>
+                        {{-- <span
+                        class="inline-flex items-center justify-center px-2 mr-3  text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-indigo-800 dark:text-gray-300">Pro</span> --}}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('material.index') }}"
                         class="{{ in_array(Route::currentRouteName(), ['material.index', 'material.show', 'material.edit', 'material.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
                         <i
                             class="fa-solid fa-boxes-stacked text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['material.index', 'material.show', 'material.edit', 'material.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">Products</span>
+                        <span class="mr-3">مادەکان</span>
                     </a>
-                    </li>
-                    {{-- <li>
-                        <a href="{{ route('report.index') }}"
-                            class="{{ in_array(Route::currentRouteName(), ['report.index']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                <li>
+                    <a href="{{ route('invoice.index') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['invoice.index', 'invoice.show', 'invoice.edit']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
 
-                            <i
-                                class="fa-solid fa-file-csv text-xl text-gray-500 transition duration-75 group-hover:text-yellow-400 dark:text-gray-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.index']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                            <span class="flex-1 ml-3 mr-3 whitespace-nowrap">Reports</span>
-                            <span
-                            class="inline-flex items-center justify-center px-2 ml-3 mr-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-indigo-800 dark:text-gray-300">Pro</span> 
-                        </a>
-                    </li> --}}
-                @endauth
+                        <i
+                            class="fa-solid fa-receipt text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['invoice.index', 'invoice.show', 'invoice.edit']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                        <span class="mr-3">وەسڵەکان</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('invoice.create') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['invoice.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+
+                        <i
+                            class="fa-solid fa-cart-plus text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['invoice.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                        <span class="mr-3">زیادکردنی وەسڵ</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('report.create') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['report.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+
+                        <i
+                            class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                        <span class="mr-3">ڕاپــۆرت </span>
+                    </a>
+                </li>
+
+
             </ul>
         </div>
     </aside>

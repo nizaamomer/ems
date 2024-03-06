@@ -168,4 +168,132 @@ class InvoiceController extends Controller
         }
         return redirect()->back()->with('message', 'وەسڵەکە بە سەرکەوتووی سڕایەوە');
     }
+    public function addToCart(Request $request)
+    {
+        $materialID = $request->material_id;
+        $cartItem = Cart::where(['material_id' => $materialID])->first();
+        if (!$cartItem) {
+            Cart::create([
+                "material_id" => $materialID,
+                "user_id" => auth()->user()->id,
+                "quantity" => 1,
+            ]);
+        } else {
+            $cartItem->quantity++;
+            $cartItem->save();
+        }
+
+        return redirect()->route('invoice.create');
+    }
+    public function destroyy($id)
+    {
+        $cartItem = Cart::where(['id' => $id])->first();
+        if ($cartItem) {
+            $cartItem->delete();
+        }
+        return redirect()->route('invoice.create');
+    }
+    public function increase(Invoice $invoice,$id,$iId)
+    {
+
+        $cartItem = Cart::where(['id' => $id])->first();
+        if ($cartItem) {
+            $cartItem->increment('quantity');
+        }
+        return redirect()->route("invoice.edit",$iId);
+    }
+    public function decrease($id)
+    {
+        $cartItem = Cart::where(['id' => $id])->first();
+        if ($cartItem) {
+            if ($cartItem->quantity > 1) {
+                $cartItem->decrement('quantity');
+            }
+        }
+        return redirect()->route('invoice.create');
+    }
+    public function setQuantity(Request $request, $id)
+    {
+        $cartItem = Cart::where(['id' => $id])->first();
+        if (!$cartItem) {
+            return redirect()->route('invoice.create')->with('error', 'Cart item not found');
+        }
+        $materialItem = Material::find($cartItem->material_id);
+        if (!$materialItem) {
+            return redirect()->route('invoice.create')->with('errors', 'Product not found');
+        }
+        $newQuantity = intval($request->input('quantity'));
+        if ($newQuantity) {
+            $cartItem->quantity = $newQuantity;
+            $cartItem->save();
+        }
+        return redirect()->route('invoice.create');
+    }
+    public function setPrice(Request $request, $id)
+
+    {
+        info($request->all());
+        $cartItem = Cart::where(['id' => $id])->first();
+        if (!$cartItem) {
+            return redirect()->route('invoice.create')->with('error', 'Cart item not found');
+        }
+        $materialItem = Material::find($cartItem->material_id);
+        if (!$materialItem) {
+            return redirect()->route('invoice.create')->with('errors', 'Product not found');
+        }
+        $newPrice = intval($request->input('price'));
+        if ($newPrice) {
+            $cartItem->unitPrice = $newPrice;
+            $cartItem->save();
+        }
+        return redirect()->route('invoice.create');
+    }
+    public function pay(Request $request)
+    {
+        $cartItems = Cart::where('user_id', auth()->user()->id)->get();
+        if ($cartItems->count() > 0) {
+            $invoiceNumber = $request->filled('invoiceNumber') ? $request->invoiceNumber : null;
+
+            if ($invoiceNumber) {
+                if (Invoice::where('invoiceNumber', $invoiceNumber)->exists()) {
+                    return redirect()->route('invoice.create')->with('error', 'Invoice number already exists.');
+                }
+            } else {
+                do {
+                    $invoiceNumber = rand();
+                } while (Invoice::where('invoiceNumber', $invoiceNumber)->exists());
+            }
+
+            $invoice = Invoice::create([
+                'user_id' => auth()->user()->id,
+                'invoiceNumber' => $invoiceNumber,
+                'date' => now(),
+            ]);
+
+            $totalAmount = 0;
+            foreach ($cartItems as $cartItem) {
+                if (is_null($cartItem->unitPrice) || $cartItem->unitPrice == 0) {
+                    return redirect()->route('invoice.create')->with('error', 'All materials must have a unit price set.');
+                }
+
+                $material = Material::find($cartItem->material_id);
+                $invoiceItem = InvoiceItem::create([
+                    'material_id' => $material->id,
+                    'invoice_id' => $invoice->id,
+                    'quantity' => $cartItem->quantity,
+                    'subTotal' => $cartItem->unitPrice * $cartItem->quantity,
+                    'unitPrice' => $cartItem->unitPrice
+                ]);
+                $totalAmount += $invoiceItem->subTotal;
+                $invoice->totalAmount = $totalAmount;
+                $invoice->update();
+
+                $cartItem->delete();
+            }
+
+            return redirect()->route('invoice.index')->with('message', 'Invoice added successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Cart is empty.');
+    }
 }

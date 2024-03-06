@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Log;
+use App\Models\Activity;
+use App\Services\ActivityService;
 use Illuminate\Http\Request;
 
-class LogController extends Controller
+class ActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $activities = ActivityService::getAllActivities();
+        return view('Activity.index', compact('activities'));
     }
 
     /**
@@ -34,7 +36,7 @@ class LogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Log $log)
+    public function show(Activity $activity)
     {
         //
     }
@@ -42,7 +44,7 @@ class LogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Log $log)
+    public function edit(Activity $activity)
     {
         //
     }
@@ -50,7 +52,7 @@ class LogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Log $log)
+    public function update(Request $request, Activity $activity)
     {
         //
     }
@@ -58,7 +60,7 @@ class LogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Log $log)
+    public function destroy(Activity $activity)
     {
         //
     }

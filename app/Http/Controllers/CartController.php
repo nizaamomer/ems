@@ -20,7 +20,7 @@ class CartController extends Controller
             ->get();
         return view(
             'invoice.create',
-            compact('materials', 'cartItems',)
+            compact('materials', 'cartItems')
         );
     }
 
@@ -39,7 +39,7 @@ class CartController extends Controller
             $cartItem->save();
         }
 
-        return redirect()->back();
+        return redirect()->route('invoice.create');
     }
     public function destroy($id)
     {
@@ -47,16 +47,15 @@ class CartController extends Controller
         if ($cartItem) {
             $cartItem->delete();
         }
-        return redirect()->back();
+        return redirect()->route('invoice.create');
     }
     public function increase($id)
     {
-
         $cartItem = Cart::where(['id' => $id])->first();
         if ($cartItem) {
             $cartItem->increment('quantity');
         }
-        return redirect()->back();
+        return redirect()->route('invoice.create');
     }
     public function decrease($id)
     {
@@ -66,67 +65,73 @@ class CartController extends Controller
                 $cartItem->decrement('quantity');
             }
         }
-        return redirect()->back();
+        return redirect()->route('invoice.create');
     }
     public function setQuantity(Request $request, $id)
     {
-        
-        $cartItem = Cart::findOrFail($id);
-        dd($cartItem);
+        $cartItem = Cart::where(['id' => $id])->first();
         if (!$cartItem) {
-            return redirect()->route('invoice.create')->with('error', 'Cart item not found');
+            return redirect()->route('invoice.create')->with('error', 'هەڵەیەک ڕوویدا');
         }
         $materialItem = Material::find($cartItem->material_id);
         if (!$materialItem) {
-            return redirect()->route('invoice.create')->with('errors', 'Product not found');
+            return redirect()->route('invoice.create')->with('errors', 'هەڵەیەک ڕوویدا');
         }
         $newQuantity = intval($request->input('quantity'));
         if ($newQuantity) {
             $cartItem->quantity = $newQuantity;
             $cartItem->save();
         }
-        return redirect()->back();
+        return redirect()->route('invoice.create');
     }
     public function setPrice(Request $request, $id)
 
     {
-        info($request->all());
         $cartItem = Cart::where(['id' => $id])->first();
         if (!$cartItem) {
-            return redirect()->route('invoice.create')->with('error', 'Cart item not found');
+            return redirect()->route('invoice.create')->with('error', 'هەڵەیەک ڕوویدا');
         }
         $materialItem = Material::find($cartItem->material_id);
         if (!$materialItem) {
-            return redirect()->route('invoice.create')->with('errors', 'Product not found');
+            return redirect()->route('invoice.create')->with('errors', 'هەڵەیەک ڕوویدا');
         }
         $newPrice = intval($request->input('price'));
         if ($newPrice) {
             $cartItem->unitPrice = $newPrice;
             $cartItem->save();
         }
-        return redirect()->back();
+        return redirect()->route('invoice.create');
     }
-    public function pay(Request $request)
+    public function addInvoice(Request $request)
     {
         $cartItems = Cart::where('user_id', auth()->user()->id)->get();
         if ($cartItems->count() > 0) {
-            $invoiceNumber = $request->filled('invoiceNumber') ? $request->invoiceNumber : rand();
-            while (Invoice::where('invoiceNumber', $invoiceNumber)->exists()) {
-                $invoiceNumber = rand();
+            $invoiceNumber = $request->filled('invoiceNumber') ? $request->invoiceNumber : null;
+    
+            if ($invoiceNumber) {
+                if (Invoice::where('invoiceNumber', $invoiceNumber)->exists()) {
+                    return redirect()->route('invoice.create')->with('error', 'پێشتر ژمارەی وەسڵ بەکارهاتووە');
+                }
+            } else {
+                do {
+                    $invoiceNumber = rand();
+                } while (Invoice::where('invoiceNumber', $invoiceNumber)->exists());
             }
-
+    
+            foreach ($cartItems as $cartItem) {
+                if (is_null($cartItem->unitPrice) || $cartItem->unitPrice == 0) {
+                    return redirect()->route('invoice.create')->with('error', 'پێویستە نرخی هاموو مادەکان دیاری بکەی');
+                }
+            }
+    
             $invoice = Invoice::create([
                 'user_id' => auth()->user()->id,
                 'invoiceNumber' => $invoiceNumber,
                 'date' => now(),
             ]);
-
+    
             $totalAmount = 0;
             foreach ($cartItems as $cartItem) {
-                if (is_null($cartItem->unitPrice) || $cartItem->unitPrice == 0) {
-                    return redirect()->route('invoice.create')->with('error', 'پێویستە هەموو مادەکان نرخیان بۆ دابنێی');
-                }
-
                 $material = Material::find($cartItem->material_id);
                 $invoiceItem = InvoiceItem::create([
                     'material_id' => $material->id,
@@ -138,13 +143,14 @@ class CartController extends Controller
                 $totalAmount += $invoiceItem->subTotal;
                 $invoice->totalAmount = $totalAmount;
                 $invoice->update();
-
+    
                 $cartItem->delete();
             }
-
-            return redirect()->route('invoice.index')->with('message', 'Invoice Added Successfully');
+    
+            return redirect()->route('invoice.index')->with('message', 'وەسڵەکە بە سەرکەوتووی زیادکرا');
         }
-
-        return redirect()->back()->with('error', 'Cart is empty.');
+    
+        return redirect()->back()->with('error', 'هیچ مادەیەک نادۆزرایەوە بۆ زیادکردن');
     }
+    
 }

@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-1.5">
         <div class="space-y-3 ">
             <div class="flex justify-between items-center space-x-1 space-x-reverse">
-                <form action="{{ route('invoice.update', $invoice->id) }}" method="GET" id="search-form" class="w-full ">
+                <form action="{{ route('invoice.create') }}" method="GET" id="search-form" class="w-full ">
                     @csrf
                     <label for="search" class="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div class="relative">
@@ -39,14 +39,14 @@
                                     کۆدی مادە
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <i class="fa-solid fa-invoice-shopping text-lg"></i>
+                                    <i class="fa-solid fa-cart-shopping text-lg"></i>
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="relative">
                             @if ($materials->count() > 0)
                                 @foreach ($materials as $material)
-                                    <form action="{{ route('invoice.addToCart') }}" method="POST">
+                                    <form action="{{ route('cart.addToCart') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="material_id" value="{{ $material->id }}">
                                         <tr
@@ -65,7 +65,7 @@
                                             <td class=" cursor-pointer">
                                                 <button type="submit" class="w-full p-4" title="زیادکردن">
                                                     <i
-                                                        class="fa-solid fa-invoice-plus dark:text-indigo-400 text-indigo-600 hover:text-indigo-700 dark:hover:text-red-400 text-lg"></i>
+                                                        class="fa-solid fa-cart-plus dark:text-indigo-400 text-indigo-600 hover:text-indigo-700 dark:hover:text-red-400 text-lg"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -117,7 +117,7 @@
                                     </th>
 
                                     <td class="px-4 py-4 flex justify-center items-center">
-                                        <form action="{{ route('invoice.decrease', $item->id) }}" method="POST">
+                                        <form action="{{ route('cart.decrease', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
                                                 class="bg-red-300 text-red-700 rounded p-1 cursor-pointer">
@@ -143,7 +143,7 @@
                                             });
                                         </script>
 
-                                        <form action="{{ route('invoice.increase', $item->id) }}" method="POST">
+                                        <form action="{{ route('in.increase',  ['id' => $item->id, 'iId' => $invoice->id]) }}" method="POST">
                                             @csrf
                                             <button type="submit"
                                                 class="bg-indigo-300 text-indigo-700 rounded p-1 cursor-pointer">
@@ -172,7 +172,7 @@
 
                                     <td class="px-4 py-4 flex justify-between ">
                                         {{ number_format($item->quantity * $item->unitPrice, 0, '.', ',') }}
-                                        <form action="{{ route('invoice.destroy', $item->id) }}" method="POST">
+                                        <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit">
                                                 <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -198,10 +198,10 @@
                 </table>
             </div>
             <div class=" pt-5 text-center">
-                <form action="{{ route('invoice.update', $invoice->id) }}"
-                    class="grid md:grid-cols-2 grid-cols-1 mb-5 md:mb-0 items-center justify-center space-x-4 space-x-reverse flex-wrap">
+                <form action="{{ route('cart.pay') }}"
+                    class="grid md:grid-cols-2 grid-cols-1 mb-5 md:mb-0 items-center justify-center space-x-4 space-x-reverse flex-wrap"
+                    method="POST">
                     @csrf
-                    @method('PUT')
 
                     <div class="px-4 text-right">
 
@@ -225,20 +225,17 @@
                                 د.ع
                             </h1>
                             <button type="submit"
-                                class="py-2.5 w-full text-sm font-medium whitespace-nowrap text-white focus:outline-none  rounded-lg dark:bg-indigo-800 bg-indigo-800 dark:text-white ">تازەکردنەوەی
-                                وەسڵ</button>
+                                class="py-2.5 w-full text-sm font-medium whitespace-nowrap text-white focus:outline-none  rounded-lg dark:bg-indigo-800 bg-indigo-800 dark:text-white ">تازەکردنەوەی وەسڵ</button>
                         </div>
                     </div>
                     <div class=" px-4">
                         <label for="invoiceNumber"
                             class="block  text-sm font-medium text-gray-900 dark:text-gray-400 after:content-['(ئەگەرهەبوو)'] after:ml-1 after:text-gray-500">
                             ژمارەی وەسڵ </label>
-                        <input type="number" id="invoiceNumber" name="invoiceNumber"
-                            value="{{ $invoice->invoiceNumber }}"
+                        <input type="number" id="invoiceNumber" name="invoiceNumber" value="{{ $invoice->invoiceNumber }}" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="0">
                     </div>
-
                 </form>
 
             </div>

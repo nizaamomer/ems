@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthController, CartController, InvoiceController, MaterialController, UserController};
+use App\Http\Controllers\{ActivityController, AuthController, CartController, InvoiceController, MaterialController, PdfController, ReportController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +23,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('users', UserController::class);
     Route::resource('material', MaterialController::class)->except("show");
-
+    
+    
+    
     Route::controller(CartController::class)->group(function () {
         Route::post('cart', 'addToCart')->name('cart.addToCart');
         Route::post('cart/destroy/{id}', 'destroy')->name('cart.destroy');
@@ -31,20 +33,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('cart/decrease/{id}', 'decrease')->name('cart.decrease');
         Route::post('cart/setQuantity/{id}', 'setQuantity')->name("setQuantity");
         Route::post('cart/setPrice/{id}', 'setPrice')->name("setPrice");
-        Route::post('cart/pay', 'pay')->name('cart.pay');
-    });
-    Route::controller(InvoiceController::class)->group(function () {
-        Route::post('invoice', 'addToCart')->name('invoice.addToCart');
-        Route::post('invoice/destroy/{id}', 'destroy')->name('invoice.destroy');
-        Route::post('invoice/increase/{id}', 'increase')->name('invoice.increase');
-        Route::post('invoice/decrease/{id}', 'decrease')->name('invoice.decrease');
-        Route::post('invoice/setQuantity/{id}', 'setQuantity')->name("setQuantity");
-        Route::post('invoice/setPrice/{id}', 'setPrice')->name("setPrice");
-        // Route::post('invoice/pay', 'pay')->name('cart.pay');
+        Route::post('cart/addInvoice', 'addInvoice')->name('cart.addInvoice');
     });
     // Route::get('cart', 'index')->name('cart.index');
+    Route::resource('report', ReportController::class);
     Route::resource('invoice', InvoiceController::class);
+    Route::post('/in/increase/{id}/{iId}', [InvoiceController::class, 'increase'])->name('in.increase');
 });
+Route::get('/pdf', [PdfController::class, 'index'])->name('pdf.index');
+Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
 Route::get('login', [AuthController::class, 'index'])->name('index');
 Route::get('login', [AuthController::class, 'index'])->name('index');
 Route::post('login', [AuthController::class, 'login'])->name('login');
