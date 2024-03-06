@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
+            //for user want delete but for keep data in invoices i use this like Soft delete but simple just set to false i wanna delete
+            $table->boolean('active')->default(true); 
             $table->timestamps();
         });
     }
