@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'User Detail')
+@section('title', 'وردەکاری بەکارهێنەر')
 @section('content')
     <div class="p-4">
         <nav class="flex" aria-label="Breadcrumb">

@@ -9,6 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
     <meta charset="UTF-8">
+    <title>سەیری ئیمەیڵەکەت بکە!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 

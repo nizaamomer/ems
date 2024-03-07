@@ -4,10 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
@@ -117,21 +115,24 @@
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
-                                <li>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Dashboard</a>
-                                </li>
+                                @if (auth()->user()->permissions === 'admin')
+                                    <li>
+                                        <a href="{{ route('dashboard') }}"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem">داشبۆرد</a>
+                                    </li>
+                                @endif
                                 <li>
                                     <a href="{{ route('profile.edit') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Edit Profile</a>
+                                        role="menuitem"> پڕۆفایل</a>
                                 </li>
+
                                 <li>
                                     <a href="#"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Sign out
+                                        role="menuitem">چوونەدەرەوە
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
                                             @csrf
@@ -151,76 +152,79 @@
         <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
 
-                <li>
-                    <a href="{{ route('dashboard') }}"
-                        class="{{ Route::currentRouteName() == 'dashboard' ? 'bg-indigo-800 text-gray-300 ' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
-                        <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ Route::currentRouteName() == 'dashboard' ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 22 21">
-                            <path
-                                d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                            <path
-                                d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                        </svg>
-                        <span class="mr-3 ">داشبۆرد</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="{{ route('users.index') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
-                        <i
-                            class="fa-solid fa-user-shield text-xl text-gray-500 transition duration-75 group-hover:text-yellow-400 dark:text-gray-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="flex-1 mr-3  whitespace-nowrap">بەکارهێنەران</span>
-                        {{-- <span
+                @if (auth()->user()->permissions === 'admin')
+                    <li>
+                        <a href="{{ route('dashboard') }}"
+                            class="{{ Route::currentRouteName() == 'dashboard' ? 'bg-indigo-800 text-gray-300 ' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                            <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ Route::currentRouteName() == 'dashboard' ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                viewBox="0 0 22 21">
+                                <path
+                                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                <path
+                                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                            </svg>
+                            <span class="mr-3 ">داشبۆرد</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('users.index') }}"
+                            class="{{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                            <i
+                                class="fa-solid fa-user-shield text-xl text-gray-500 transition duration-75 group-hover:text-yellow-400 dark:text-gray-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['users.index', 'users.edit', 'users.create', 'users.show']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                            <span class="flex-1 mr-3  whitespace-nowrap">بەکارهێنەران</span>
+                            {{-- <span
                         class="inline-flex items-center justify-center px-2 mr-3  text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-indigo-800 dark:text-gray-300">Pro</span> --}}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('material.index') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['material.index', 'material.show', 'material.edit', 'material.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
-                        <i
-                            class="fa-solid fa-boxes-stacked text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['material.index', 'material.show', 'material.edit', 'material.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">مادەکان</span>
-                    </a>
-                <li>
-                    <a href="{{ route('invoice.index') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['invoice.index', 'invoice.show', 'invoice.edit']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'recorder')
+                    <li>
+                        <a href="{{ route('material.index') }}"
+                            class="{{ in_array(Route::currentRouteName(), ['material.index', 'material.show', 'material.edit', 'material.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                            <i
+                                class="fa-solid fa-boxes-stacked text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['material.index', 'material.show', 'material.edit', 'material.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                            <span class="mr-3">مادەکان</span>
+                        </a>
+                    <li>
+                        <a href="{{ route('invoice.index') }}"
+                            class="{{ in_array(Route::currentRouteName(), ['invoice.index', 'invoice.show', 'invoice.edit']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
 
-                        <i
-                            class="fa-solid fa-receipt text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['invoice.index', 'invoice.show', 'invoice.edit']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">وەسڵەکان</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('invoice.create') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['invoice.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                            <i
+                                class="fa-solid fa-receipt text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['invoice.index', 'invoice.show', 'invoice.edit']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                            <span class="mr-3">وەسڵەکان</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('invoice.create') }}"
+                            class="{{ in_array(Route::currentRouteName(), ['invoice.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
 
-                        <i
-                            class="fa-solid fa-cart-plus text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['invoice.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">زیادکردنی وەسڵ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('report.invoice') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['report.invoice']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                            <i
+                                class="fa-solid fa-cart-plus text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['invoice.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                            <span class="mr-3">زیادکردنی وەسڵ</span>
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'viewer')
+                    <li>
+                        <a href="{{ route('report.invoice') }}"
+                            class="{{ in_array(Route::currentRouteName(), ['report.invoice']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
 
-                        <i
-                            class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.invoice']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">ڕاپــۆرتی وەسڵ </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('report.activity') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['report.activity']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                            <i
+                                class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.invoice']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                            <span class="mr-3">ڕاپــۆرتی وەسڵەکان </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('report.activity') }}"
+                            class="{{ in_array(Route::currentRouteName(), ['report.activity']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
 
-                        <i
-                            class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.activity']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">ڕاپــۆرتی ئەکتیڤیتی </span>
-                    </a>
-                </li>
-
+                            <i
+                                class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.activity']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                            <span class="mr-3">ڕاپــۆرتی چالاکیەکان </span>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </div>

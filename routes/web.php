@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     AuthController,
     CartController,
+    DashboardController,
     InvoiceController,
     MaterialController,
     ReportController,
@@ -11,9 +12,7 @@ use App\Http\Controllers\{
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name("dashboard");
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('profile/edit', [UserController::class, 'profileEdit'])->name('profile.edit');
     Route::post('profile/update/{id}/', [UserController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

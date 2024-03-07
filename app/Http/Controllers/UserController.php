@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        ActivityService::log('بەکارهێنەر', 'سایری لیستی بەکارهێنەرانی کرد', auth()->id(), 'blue');
+        ActivityService::log('بەکارهێنەر', 'سەیری لیستی بەکارهێنەرانی کرد', auth()->id(), 'blue');
         $users =  User::OfSearch($request->input('search'))->orderByDesc('id')->paginate(15)->withQueryString();
         return view('user.index', compact('users'));
     }

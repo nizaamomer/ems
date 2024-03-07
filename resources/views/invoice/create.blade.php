@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'Buy Invoice create')
+@section('title', 'زیادردنی وەسڵ')
 @section('content')
     @if (session('message'))
         @php
@@ -30,7 +30,7 @@
                 <div class=" h-[72vh] overflow-auto w-full border-t border-gray-500 border-dotted">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 relative">
                         <thead
-                            class="text-sm capitalize text-center z-50 overflow-auto  sticky top-0 bg-gray-300 text-black dark:bg-gray-800 border-b dark:border-gray-700 dark:text-green-500">
+                            class="text-sm capitalize text-center z-30 overflow-auto  sticky top-0 bg-gray-300 text-black dark:bg-gray-800 border-b dark:border-gray-700 dark:text-green-500">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     ناوی مادە
@@ -89,7 +89,7 @@
             <div class="dark:bg-gray-800 bg-gray-100 rounded-md h-[67vh] overflow-auto ">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-1 relative">
                     <thead
-                        class="text-sm text-gray-700 capitalize text-center z-50 overflow-auto  sticky top-0 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700 dark:text-gray-400">
+                        class="text-sm text-gray-700 capitalize text-center z-30 overflow-auto  sticky top-0 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">
                                 ناو

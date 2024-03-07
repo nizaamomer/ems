@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'Create User')
+@section('title', 'پڕۆفایل')
 @section('content')
     <div class="sm:flex block items-center justify-between mb-4 ">
         <nav class="flex" aria-label="Breadcrumb">
@@ -37,6 +37,17 @@
             گەڕانەوە
         </a>
     </div>
+    @php
+        function getFirst($name)
+        {
+            $words = explode(' ', $name);
+            $initials = '';
+            foreach ($words as $word) {
+                $initials .= substr($word, 0, 1);
+            }
+            return $initials;
+        }
+    @endphp
     <div
         class="w-full mx-auto sm:w-3/5 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
@@ -50,10 +61,11 @@
                     <label for="image" class="cursor-pointer">
                         <input type="file" name="image" id="image"
                             class="w-full h-full absolute inset-0 opacity-0 cursor-pointer" onchange="displayImage(this)" />
-                        <div id="circleIcon" class="w-7 h-7 text-indigo-300 bg-center bg-cover bg-no-repeat">SL
+                        <div id="circleIcon" class="w-7 h-7 text-2xl text-center text-indigo-300 bg-center bg-cover bg-no-repeat">
+                            {{ getFirst(auth()->user()->name) }}
                         </div>
                         <img id="selectedImage" class="w-full h-full absolute inset-0 object-cover"
-                            src="{{ asset('user_images/' . auth()->user()->image) }}" alt="Selected Image"
+                            src="{{ asset('user_images/' . auth()->user()->image) }}" alt="{{ auth()->user()->name }}"
                             style="{{ auth()->user()->image ? 'display: block;' : 'display: none;' }}" />
                     </label>
                 </div>

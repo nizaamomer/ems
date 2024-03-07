@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'Buy Invoices')
+@section('title', 'ڕاپۆرتی وەسڵەکان')
 @section('content')
     @if (session('message'))
         @php
@@ -137,6 +137,7 @@
                     </div>
                 </div>
 
+                @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'viewer')
 
                 <!-- Modal toggle -->
                 <button data-modal-target="default-modal" data-modal-toggle="default-modal"
@@ -221,7 +222,7 @@
                         </form>
                     </div>
                 </div>
-
+                @endif
             </form>
         </div>
     </div>
@@ -247,9 +248,12 @@
                         <th scope="col" class="px-4 py-3">
                             ژمارەی مادەکان
                         </th>
+                        @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'viewer')
+
                         <th scope="col" class="px-4 py-3">
                             کردارەکان
                         </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -278,10 +282,11 @@
                                 </span>
                             </td>
 
+                            @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'viewer')
 
                             <td class="px-4 py-4 text-center flex justify-evenly space-x-4 space-x-reverse align-middle">
 
-                                <a href="{{ route('report.show', $report->id) }}">
+                                <a href="{{ route('invoice.show', $report->id) }}">
                                     <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                         class="sm:w-5 sm:h-5  w-4 h-4  text-green-400 cursor-pointer hover:text-green-500">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -295,7 +300,7 @@
 
 
                             </td>
-
+                            @endif
                         </tr>
                     @endforeach
                 @else

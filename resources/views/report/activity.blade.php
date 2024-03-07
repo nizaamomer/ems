@@ -120,14 +120,14 @@
                     <div data-popper-arrow></div>
                 </div>
 
-              
-                
-            </form>
-                <a 
-                type="button"
-                class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
 
-                href="{{ route('report.activity', ['generateActivityPdf' => true]) }}">  PDF</a>
+
+            </form>
+            @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'viewer')
+                <a type="button"
+                    class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                    href="{{ route('report.activity', ['generateActivityPdf' => true]) }}"> PDF</a>
+            @endif
         </div>
     </div>
     <div class="relative overflow-x-scroll scroll-smooth rounded-md">
@@ -172,7 +172,7 @@
                     @endforeach
                 @else
                     <div class="text-gray-400 dark:text-gray-400 text-center mt-24 text-lg">
-                     هیچ چالەکیەک نادۆزرایەوە
+                        هیچ چالەکیەک نادۆزرایەوە
                     </div>
                 </tbody>
             </table>

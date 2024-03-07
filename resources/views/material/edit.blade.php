@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'Edit Product')
+@section('title', 'دەستکاریکردنی مادە')
 @section('content')
     <div class="sm:flex block items-center justify-between mb-4 lg:w-9/12 mx-auto ">
         <nav class="flex" aria-label="Breadcrumb">
