@@ -55,8 +55,20 @@ return array(
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        "font_cache" => storage_path('fonts'),
-
+        'options' => [
+            'fontDir' => base_path('public/fonts/'),
+            'fontCache' => storage_path('app/fonts/'),
+            'defaultFont' => 'nrt',
+            'font_families' => [
+                'nrt' => [
+                    'normal' => 'nrt.ttf',
+                    'bold' => 'nrt-Bold.ttf',
+                    'italic' => 'nrt-Italic.ttf',
+                    'bold_italic' => 'nrt-BoldItalic.ttf',
+                ],
+            ],
+        ],
+        
         /**
          * The location of a temporary directory.
          *
@@ -186,7 +198,7 @@ return array(
          * Used if no suitable fonts can be found. This must exist in the font folder.
          * @var string
          */
-        "default_font" => "serif",
+        "default_font" => "nrt",
 
         /**
          * Image DPI setting
@@ -235,7 +247,7 @@ return array(
          *
          * @var bool
          */
-        "enable_php" => false,
+        "enable_php" => true,
 
         /**
          * Enable inline Javascript

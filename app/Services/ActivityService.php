@@ -8,12 +8,13 @@ use App\Models\Activity;
 
 class ActivityService
 {
-    public static function log($subject, $action, $user_id)
+    public static function log($subject, $action, $user_id,$color)
     {
         Activity::create([
             'subject' => $subject,
             'action' => $action,
             'user_id' => $user_id,
+            'color' => $color,
         ]);
     }
     public static function getAllActivities()

@@ -1,31 +1,24 @@
 <?php
 
-use App\Http\Controllers\{ActivityController, AuthController, CartController, InvoiceController, MaterialController, PdfController, ReportController, UserController};
+use App\Http\Controllers\{
+    AuthController,
+    CartController,
+    InvoiceController,
+    MaterialController,
+    ReportController,
+    UserController
+};
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-})->name("dashboard");
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name("dashboard");
     Route::get('profile/edit', [UserController::class, 'profileEdit'])->name('profile.edit');
     Route::post('profile/update/{id}/', [UserController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('users', UserController::class);
     Route::resource('material', MaterialController::class)->except("show");
-    
-    
-    
     Route::controller(CartController::class)->group(function () {
         Route::post('cart', 'addToCart')->name('cart.addToCart');
         Route::post('cart/destroy/{id}', 'destroy')->name('cart.destroy');
@@ -43,16 +36,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('inv/setQuantity/{id}', 'setQuantity')->name("inv.setQuantity");
         Route::post('inv/setPrice/{id}', 'setPrice')->name("inv.setPrice");
         Route::post('inv/UpdateInvoice', 'UpdateInvoice')->name('inv.UpdateInvoice');
-
     });
-    // Route::get('cart', 'index')->name('cart.index');
-    Route::resource('report', ReportController::class);
-    Route::post('/in/increase/{id}/{iId}', [InvoiceController::class, 'increase'])->name('in.increase');
+
     Route::resource('invoice', InvoiceController::class);
-    Route::post('in/{id}', [InvoiceController::class, 'addToCart'])->name('in.addToCart');
+    Route::get('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice');
+    Route::post('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice');
+    Route::get('/report/activity', [ReportController::class, 'activity'])->name('report.activity');
 });
-Route::get('/pdf', [PdfController::class, 'index'])->name('pdf.index');
-Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+
 Route::get('login', [AuthController::class, 'index'])->name('index');
 Route::get('login', [AuthController::class, 'index'])->name('index');
 Route::post('login', [AuthController::class, 'login'])->name('login');

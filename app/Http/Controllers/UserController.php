@@ -12,14 +12,14 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        ActivityService::log('User', 'Viewed User List', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'سایری لیستی بەکارهێنەرانی کرد', auth()->id(), 'blue');
         $users =  User::OfSearch($request->input('search'))->orderByDesc('id')->paginate(15)->withQueryString();
         return view('user.index', compact('users'));
     }
 
     public function create()
     {
-        ActivityService::log('User', 'Viewed User Create Form', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'فۆرمی دروستکردنی بەکارهێنەری کردەوە', auth()->id(), 'orange');
         return view('user.create');
     }
 
@@ -32,18 +32,18 @@ class UserController extends Controller
             $data["image"] = $image;
         }
         User::create($data);
-        ActivityService::log('User', 'Created User', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'بەکارهێنەرێکی زیادکرد', auth()->id(), 'green');
         return redirect()->route('users.index')->with('success', 'بەکارهێنەر زیادکرا بە سەرکەوتووی');
     }
     public function show(user $user)
     {
-        ActivityService::log('User', 'Viewed User', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'سەیری وردەکاری بەکارهێنەری کرد', auth()->id(), 'blue');
         return view('user.show', compact('user'));
     }
 
     public function edit(User $user)
     {
-        ActivityService::log('User', 'Viewed User Edit Form', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'فۆرمی دەسکاریکردنی بەکارهێنەری کردەوە', auth()->id(), "orange");
         return view('user.edit', compact('user'));
     }
 
@@ -65,7 +65,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        ActivityService::log('User', 'Updated User', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'زانیاریەکانی بەکەرهێنارێکی تازاکردەوە', auth()->id(), 'green');
         return redirect()->route('users.index')->with('success', 'زانیاریەکانی بەکارهێنەر تازەکرایەوە بە سەرکەوتووی');
     }
 
@@ -80,14 +80,14 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'ناتوانیت ئەدمین بسڕیەوە');
         }
         $user->delete();
-        ActivityService::log('User', 'Deleted User', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'بەکارهێنەرێکی سڕیەوە', auth()->id(), "red");
 
         return redirect()->back()->with('success', 'بەکارهێنەر سڕایەوە بە سەرکەوتووی');
     }
 
     public function profileEdit()
     {
-        ActivityService::log('User', 'Viewed Profile Edit Form', auth()->id());
+        ActivityService::log('بەکارهێنەر', 'سەیری پڕۆفایلی خۆی کرد', auth()->id(), 'blue');
         return view('user.ProfileEdit');
     }
     public function profileUpdate(Request $request, $id)
@@ -114,7 +114,7 @@ class UserController extends Controller
                 $user->image = $image;
             }
             $user->update($data);
-            ActivityService::log('User', 'Updated Profile', auth()->id());
+            ActivityService::log('بەکارهێنەر', 'زانیاریەکانی پڕۆفایلی خۆی تازەکردەوە', auth()->id(), "green");
 
             return back()->with('success', 'زانیاریەکانت نوێ کرایەوە بە سەرکەوتووی');
         } elseif ($request->input('num') == 'form2') {
@@ -126,7 +126,7 @@ class UserController extends Controller
                 return back()->with('error', 'وشەی نهێنی ئێستا هەڵەیە');
             }
             $user->update(['password' => bcrypt($data['password'])]);
-            ActivityService::log('User', 'Updated Profile', auth()->id());
+            ActivityService::log('بەکارهێنەر', 'زانیاریەکانی پڕۆفایلی خۆی تازەکردەوە', auth()->id(), "green");
 
             return back()->with('success', 'وشە نهێنیەکەت بە سەرکەوتووی گۆڕا');
         } else {

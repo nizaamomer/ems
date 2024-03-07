@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Material;
+use App\Services\ActivityService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -18,6 +19,8 @@ class CartController extends Controller
         $cartItems = Cart::with('material')->where(['type' => 'create', 'user_id' => auth()->user()->id])
             ->orderByDesc('id')
             ->get();
+        ActivityService::log('زیادکردنی وەسڵ', 'فۆرمی زیادکردنی وەسڵی کردەوە', auth()->id(), "orange");
+
         return view(
             'invoice.create',
             compact('materials', 'cartItems')
@@ -167,6 +170,7 @@ class CartController extends Controller
                 $invoice->update();
                 $cartItem->delete();
             }
+            ActivityService::log('زیادکردنی وەسڵ', 'وەسڵێکی زیادکرد', auth()->id(), "green");
 
             return redirect()->route('invoice.index')->with('message', 'وەسڵەکە بە سەرکەوتووی زیادکرا');
         }

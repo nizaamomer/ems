@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Material;
 use App\Models\User;
+use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -21,6 +22,8 @@ class InvoiceController extends Controller
         $invoices = $invoicesQuery->get();
 
         $users = User::all();
+        ActivityService::log('وەسڵەکان', 'سەیری لیستی وەسڵەکانی کرد', auth()->id(), "blue");
+
         return view('invoice.index', compact('invoices', 'users'));
     }
     public function create(Request $request)
@@ -31,6 +34,8 @@ class InvoiceController extends Controller
         $cartItems = Cart::with('material')->where(['type' => 'create', 'user_id' => auth()->user()->id])
             ->orderByDesc('id')
             ->get();
+        ActivityService::log('وەسڵەکان', 'فۆرمی زیادکردنی وەسڵی کردەوە', auth()->id(), "orange");
+
         return view(
             'invoice.create',
             compact('materials', 'cartItems',)
@@ -46,6 +51,7 @@ class InvoiceController extends Controller
         if ($cartItem) {
             $cartItem->delete();
         }
+
         return redirect()->back();
     }
     public function show($id)
@@ -54,6 +60,8 @@ class InvoiceController extends Controller
         if (!$invoice) {
             abort(404);
         }
+        ActivityService::log('وەسڵەکان', 'سەیری وردەکاری وەسڵێکی کرد', auth()->id(), "blue");
+
         return view('invoice.show', compact('invoice'));
     }
 
@@ -131,6 +139,8 @@ class InvoiceController extends Controller
         if ($invoice) {
             $invoice->delete();
         }
+        ActivityService::log('وەسڵەکان', ' وەسڵێکی سڕیەوە ', auth()->id(), "red");
+
         return redirect()->back()->with('message', 'وەسڵەکە بە سەرکەوتووی سڕایەوە');
     }
 
@@ -210,29 +220,29 @@ class InvoiceController extends Controller
         if ($cartItems->count() > 0) {
             $invoiceNumber = $request->filled('invoiceNumber') ? $request->invoiceNumber : null;
             $currentInvoiceNumber = $request->currentInvoiceNumber;
-    
+
             // Check if the invoice number already exists (ignoring the current invoice number)
             if ($invoiceNumber && Invoice::where('invoiceNumber', $invoiceNumber)->where('invoiceNumber', '!=', $currentInvoiceNumber)->exists()) {
                 return redirect()->back()->with('error', 'Invoice number already exists.');
             }
-    
+
             $invoice = Invoice::findOrFail($request->invoice_id);
-    
+
             // Update the invoice attributes
             $invoice->invoiceNumber = $invoiceNumber ?? $invoice->invoiceNumber; // Keep the current invoice number if not provided
             $invoice->date = now(); // Update the date
             $invoice->totalAmount = 0; // Reset the total amount
-    
+
             // Check if all materials have a unit price set
             foreach ($cartItems as $cartItem) {
                 if (is_null($cartItem->unitPrice) || $cartItem->unitPrice == 0) {
                     return redirect()->back()->with('error', 'All materials must have a unit price set.');
                 }
             }
-            
+
             // Delete existing invoice items
             $invoice->invoiceItems()->delete();
-    
+
             // Process the cart items
             foreach ($cartItems as $cartItem) {
                 $material = Material::find($cartItem->material_id);
@@ -245,17 +255,15 @@ class InvoiceController extends Controller
                 ]);
                 $invoice->totalAmount += $invoiceItem->subTotal;
             }
-    
-            // Save the updated invoice
+
             $invoice->save();
-    
-            // Delete the cart items
+
             Cart::where(['user_id' => auth()->user()->id, 'type' => 'edit'])->delete();
-    
+            ActivityService::log('وەسڵەکان', 'زانیاریەکانی وەسڵێکی تازەکردەوە', auth()->id(), "green");
+
             return redirect()->route('invoice.index')->with('message', 'Invoice updated successfully.');
         }
-    
+
         return redirect()->back()->with('error', 'Cart is empty.');
     }
-    
 }

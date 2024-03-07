@@ -15,20 +15,20 @@ class MaterialController extends Controller
         $materials = Material::where("active", true)->OfSearch($request->input('search'))
             ->orderByDesc('id')->paginate(15)->withQueryString();
         $categorycount = Material::count();
-        ActivityService::log('Material', 'Viewed Material List', auth()->id());
+        ActivityService::log('مادەکان', 'سەیری لیستی مادەکانی کرد', auth()->id(),"blue");
 
         return view('material.index', compact('materials', 'categorycount'));
     }
     public function create()
     {
-        ActivityService::log('Material', 'Viewed Material Create Form', auth()->id());
+        ActivityService::log('مادەکان', 'فۆرمی زیادکردنی مادەی کردەوە', auth()->id(),"orange");
 
         return view('material.create');
     }
     public function store(MaterialRequest $request)
     {
         Material::create($request->validated());
-        ActivityService::log('Material', 'Created Material', auth()->id());
+        ActivityService::log('مادەکان', 'مادەیاکی زیادکرد', auth()->id(),"green");
 
         return redirect()
             ->route('material.index')
@@ -37,7 +37,7 @@ class MaterialController extends Controller
 
     public function edit(Material $material)
     {
-        ActivityService::log('Material', 'Viewed Material Edit Form', auth()->id());
+        ActivityService::log('مادەکان', 'فۆرمی دەسکاریکردنی مادەی کردەوە', auth()->id(),"orange");
 
         return view('material.edit', compact('material'));
     }
@@ -46,7 +46,7 @@ class MaterialController extends Controller
     {
 
         $material->update($request->validated());
-        ActivityService::log('Material', 'Updated Material', auth()->id());
+        ActivityService::log('مادەکان', 'مادەیەکی نوێکردەوە', auth()->id(),"green");
 
         return redirect()
             ->route('material.index')
@@ -57,7 +57,7 @@ class MaterialController extends Controller
     {
         $material->active = false;
         $material->update();
-        ActivityService::log('Material', 'Deleted Material', auth()->id());
+        ActivityService::log('مادەکان', 'مادەیەکی سڕیەوە', auth()->id(),"red");
 
         return redirect()->back()->with('success', 'مادەکە سڕایەوە بە سەرکەوتووی');
     }

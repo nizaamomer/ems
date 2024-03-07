@@ -203,12 +203,21 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('report.create') }}"
-                        class="{{ in_array(Route::currentRouteName(), ['report.create']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+                    <a href="{{ route('report.invoice') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['report.invoice']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
 
                         <i
-                            class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.create']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
-                        <span class="mr-3">ڕاپــۆرت </span>
+                            class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.invoice']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                        <span class="mr-3">ڕاپــۆرتی وەسڵ </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('report.activity') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['report.activity']) ? 'bg-indigo-800 text-gray-300' : '' }} flex items-center p-2 rounded-lg dark:text-gray-400 hover:bg-indigo-700 dark:hover:bg-indigo-800 group">
+
+                        <i
+                            class="fa-solid fa-file-pdf text-base text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-yellow-400 dark:group-hover:text-yellow-400 {{ in_array(Route::currentRouteName(), ['report.activity']) ? 'text-yellow-400 dark:text-yellow-400 ' : '' }}"></i>
+                        <span class="mr-3">ڕاپــۆرتی ئەکتیڤیتی </span>
                     </a>
                 </li>
 
