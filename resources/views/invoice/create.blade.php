@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'Buy Invoice Edit')
+@section('title', 'Buy Invoice create')
 @section('content')
     @if (session('message'))
         @php
@@ -128,7 +128,7 @@
                                             </button>
                                         </form>
                                         <span>
-                                            <form id="quantity-form-{{ $item->id }}" action="{{ route('setQuantity', $item->id) }}" method="POST">
+                                            <form id="quantity-form-{{ $item->id }}" action="{{ route('cart.setQuantity', $item->id) }}" method="POST">
                                                 @csrf
                                                 <input type="number" value="{{ $item->quantity }}" name="quantity" id="quantity-{{ $item->id }}" min="1" class="block pr-4 w-10 rounded p-0.5 appearance-none outline-none border-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />
                                             </form>
@@ -152,7 +152,7 @@
                                         </form>
                                     </td>
                                     <td class="px-4 py-4 ">
-                                        <form id="price-form-{{ $item->id }}" action="{{ route('setPrice', $item->id) }}" method="POST">
+                                        <form id="price-form-{{ $item->id }}" action="{{ route('cart.setPrice', $item->id) }}" method="POST">
                                             @csrf
                                             <input type="number" value="{{ $item->unitPrice }}" name="price" id="price-{{ $item->id }}" min="1" placeholder="نرخی مادە" class="mx-auto w-20 rounded py-0.5 px-1 appearance-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />د.ع
                                         </form>

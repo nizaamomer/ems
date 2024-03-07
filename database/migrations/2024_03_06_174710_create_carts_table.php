@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('material_id')->constrained('materials')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('quantity');
+            $table->enum("type", ["create", "edit"]);
             $table->double('unitPrice')->nullable();
             $table->timestamps();
         });

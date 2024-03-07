@@ -1,5 +1,5 @@
 @extends('layout.sidebar')
-@section('title', 'Buy Invoice Edit')
+@section('title', 'Buy Invoice create')
 @section('content')
     @if (session('message'))
         @php
@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-1.5">
         <div class="space-y-3 ">
             <div class="flex justify-between items-center space-x-1 space-x-reverse">
-                <form action="{{ route('invoice.create') }}" method="GET" id="search-form" class="w-full ">
+                <form action="{{ route('invoice.update',$invoice->id) }}" method="GET" id="search-form" class="w-full ">
                     @csrf
                     <label for="search" class="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div class="relative">
@@ -46,7 +46,7 @@
                         <tbody class="relative">
                             @if ($materials->count() > 0)
                                 @foreach ($materials as $material)
-                                    <form action="{{ route('cart.addToCart') }}" method="POST">
+                                    <form action="{{ route('inv.addToCart') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="material_id" value="{{ $material->id }}">
                                         <tr
@@ -117,7 +117,7 @@
                                     </th>
 
                                     <td class="px-4 py-4 flex justify-center items-center">
-                                        <form action="{{ route('cart.decrease', $item->id) }}" method="POST">
+                                        <form action="{{ route('inv.decrease', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
                                                 class="bg-red-300 text-red-700 rounded p-1 cursor-pointer">
@@ -127,23 +127,19 @@
                                                 </svg>
                                             </button>
                                         </form>
-
                                         <span>
-                                            <form id="quantity-form" action="{{ route('setQuantity', $item->id) }}"
-                                                method="POST">
+                                            <form id="quantity-form-{{ $item->id }}" action="{{ route('inv.setQuantity', $item->id) }}" method="POST">
                                                 @csrf
-                                                <input type="number" value="{{ $item->quantity }}" name="quantity"
-                                                    id="quantity" min="1"
-                                                    class="block pr-4 w-10 rounded p-0.5 appearance-none outline-none border-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />
+                                                <input type="number" value="{{ $item->quantity }}" name="quantity" id="quantity-{{ $item->id }}" min="1" class="block pr-4 w-10 rounded p-0.5 appearance-none outline-none border-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />
                                             </form>
                                         </span>
                                         <script>
-                                            document.getElementById('quantity').addEventListener('blur', function() {
-                                                document.getElementById('quantity-form').submit();
+                                            document.getElementById('quantity-{{ $item->id }}').addEventListener('blur', function() {
+                                                document.getElementById('quantity-form-{{ $item->id }}').submit();
                                             });
                                         </script>
-
-                                        <form action="{{ route('in.increase',  ['id' => $item->id, 'iId' => $invoice->id]) }}" method="POST">
+                                        
+                                        <form action="{{ route('inv.increase', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
                                                 class="bg-indigo-300 text-indigo-700 rounded p-1 cursor-pointer">
@@ -156,23 +152,21 @@
                                         </form>
                                     </td>
                                     <td class="px-4 py-4 ">
-                                        <form id="price-form" action="{{ route('setPrice', $item->id) }}"
-                                            method="POST">
+                                        <form id="price-form-{{ $item->id }}" action="{{ route('inv.setPrice', $item->id) }}" method="POST">
                                             @csrf
-                                            <input type="number" value="{{ $item->unitPrice }}" name="price"
-                                                id="price" min="1" placeholder="نرخی مادە"
-                                                class="mx-auto w-20 rounded py-0.5 px-1 appearance-none   text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />د.ع
+                                            <input type="number" value="{{ $item->unitPrice }}" name="price" id="price-{{ $item->id }}" min="1" placeholder="نرخی مادە" class="mx-auto w-20 rounded py-0.5 px-1 appearance-none text-sm text-gray-900 bg-transparent dark:text-white focus:outline-none" />د.ع
                                         </form>
                                         <script>
-                                            document.getElementById('price').addEventListener('blur', function() {
-                                                document.getElementById('price-form').submit();
+                                            document.getElementById('price-{{ $item->id }}').addEventListener('blur', function() {
+                                                document.getElementById('price-form-{{ $item->id }}').submit();
                                             });
                                         </script>
                                     </td>
+                                    
 
                                     <td class="px-4 py-4 flex justify-between ">
                                         {{ number_format($item->quantity * $item->unitPrice, 0, '.', ',') }}
-                                        <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                        <form action="{{ route('inv.destroy', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit">
                                                 <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -198,7 +192,7 @@
                 </table>
             </div>
             <div class=" pt-5 text-center">
-                <form action="{{ route('cart.pay') }}"
+                <form action="{{ route('inv.UpdateInvoice') }}"
                     class="grid md:grid-cols-2 grid-cols-1 mb-5 md:mb-0 items-center justify-center space-x-4 space-x-reverse flex-wrap"
                     method="POST">
                     @csrf
@@ -225,14 +219,17 @@
                                 د.ع
                             </h1>
                             <button type="submit"
-                                class="py-2.5 w-full text-sm font-medium whitespace-nowrap text-white focus:outline-none  rounded-lg dark:bg-indigo-800 bg-indigo-800 dark:text-white ">تازەکردنەوەی وەسڵ</button>
+                                class="py-2.5 w-full text-sm font-medium whitespace-nowrap text-white focus:outline-none  rounded-lg dark:bg-indigo-800 bg-indigo-800 dark:text-white ">تازەکردنەوەی 
+                                وەسڵ</button>
                         </div>
                     </div>
                     <div class=" px-4">
                         <label for="invoiceNumber"
                             class="block  text-sm font-medium text-gray-900 dark:text-gray-400 after:content-['(ئەگەرهەبوو)'] after:ml-1 after:text-gray-500">
                             ژمارەی وەسڵ </label>
-                        <input type="number" id="invoiceNumber" name="invoiceNumber" value="{{ $invoice->invoiceNumber }}" 
+                            <input type="hidden"  value="{{ $invoice->invoiceNumber }}" name="currentInvoiceNumber">
+                            <input type="hidden"  value="{{ $invoice->id }}" name="invoice_id">
+                        <input type="number" id="invoiceNumber" name="invoiceNumber" value="{{ $invoice->invoiceNumber }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="0">
                     </div>

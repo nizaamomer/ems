@@ -30,12 +30,12 @@ class UserRequest extends FormRequest
                 'password' => 'required|confirmed|min:8',
             ];
         } else if ($this->isMethod('put') || $this->isMethod('patch')) {
-            return [    
+            return [
                 'name' => 'required|min:3',
-                'email' => 'required|email|unique:users,email,'.$this->route('user')->id,
                 'permissions' => 'required',
                 'image' => 'sometimes|mimes:png,jpg,jpeg',
-                'password' => 'required|min:8'
+                'password' => 'required|min:8',
+                'email' => 'required|email|unique:users,email,' . $this->route('user')->id,
             ];
         }
     }

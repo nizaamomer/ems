@@ -71,7 +71,7 @@
                                 ئەم هەفتە</option>
                             <option class="checked:bg-indigo-500 checked:text-white font-semibold rounded "
                                 value="last_week" @selected(request('date_range') === 'last_week')>
-                            کۆتا هەفتە</option>
+                                کۆتا هەفتە</option>
                             <option class="checked:bg-indigo-500 checked:text-white font-semibold rounded "
                                 value="this_month" @selected(request('date_range') === 'this_month')>
                                 ئەم مانگە</option>
@@ -151,7 +151,7 @@
         @if ($invoices->count() > 0)
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs   text-indigo-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-indigo-400">
-                    <tr class="divide-x divide-indigo-400 text-center">
+                    <tr class="divide-x divide-x-reverse divide-indigo-400 text-center">
                         <th scope="col" class="px-4 py-3">
                             ناوی بەکارهێنەر
                         </th>
@@ -169,12 +169,9 @@
                         <th scope="col" class="px-4 py-3">
                             ژمارەی مادەکان
                         </th>
-
-
                         <th scope="col" class="px-4 py-3">
                             کردارەکان
                         </th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -182,10 +179,9 @@
                         <tr
                             class="bg-white truncate  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                             <th scope="row"
-                                class="px-4 py-4 font-medium capitalize  text-gray-900 whitespace-nowrap dark:text-white">
+                                class="px-4 py-4 font-medium capitalize text-center text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $invoice->user->name }}
                             </th>
-
                             <td class="px-4 py-4 text-center">
                                 <span class="bg-green-300 text-green-700 p-1 rounded font-semibold">
                                     {{ $invoice->invoiceNumber }}</span>
@@ -195,10 +191,9 @@
                                     د.ع
                                 </span>
                             </td>
-                            <td class="px-4 py-4">
+                            <td class="px-4 py-4 text-center">
                                 {{ $invoice->date }}
                             </td>
-
                             <td class="px-4 py-4 space-x-1 space-x-reverse text-center">
                                 <span class="bg-indigo-300 text-indigo-700 p-1.5 rounded font-semibold">
                                     {{ $invoice->invoiceItems->count() }}

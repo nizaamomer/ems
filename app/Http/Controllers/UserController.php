@@ -47,19 +47,21 @@ class UserController extends Controller
         return view('user.edit', compact('user'));
     }
 
-    public function update(UserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
         $data = $request->validated();
+        dd($data);
+
         if ($request->hasFile('image')) {
             if ($user->image) {
-                $oldImagePath ='user_images/' . $user->image;
+                $oldImagePath = public_path('user_images/')  . $user->image;
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
             }
             $image = $request->file('image')->hashName();
             $request->file('image')->move('user_images', $image);
-            $data['image'] = $image;
+            $data["image"] = $image;
         }
 
         $user->update($data);
@@ -103,7 +105,7 @@ class UserController extends Controller
             ]);
 
             if ($request->hasFile('image')) {
-                $oldImagePath = public_path('user_images/') . $user->image;
+                $oldImagePath = 'user_images/' . $user->image;
                 if (file_exists($oldImagePath) && is_file($oldImagePath)) {
                     unlink($oldImagePath);
                 }

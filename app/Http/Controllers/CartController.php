@@ -15,7 +15,7 @@ class CartController extends Controller
         $materials = Material::where("active", true)
             ->OfSearch($request->search)
             ->orderByDesc('code')->get();
-        $cartItems = Cart::with('material')
+        $cartItems = Cart::with('material')->where(['type' => 'create', 'user_id' => auth()->user()->id])
             ->orderByDesc('id')
             ->get();
         return view(
@@ -27,49 +27,66 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         $materialID = $request->material_id;
-        $cartItem = Cart::where(['material_id' => $materialID])->first();
+        $cartItem = Cart::where(['material_id' => $materialID, 'user_id' => auth()->user()->id, 'type' => 'create'])->first();
         if (!$cartItem) {
             Cart::create([
                 "material_id" => $materialID,
                 "user_id" => auth()->user()->id,
                 "quantity" => 1,
+                "type" => "create",
             ]);
         } else {
             $cartItem->quantity++;
             $cartItem->save();
         }
 
-        return redirect()->route('invoice.create');
+        return redirect()->back();
     }
     public function destroy($id)
     {
-        $cartItem = Cart::where(['id' => $id])->first();
+        $cartItem = Cart::where([
+            'id' => $id,
+            'type' => 'create',
+            'user_id' => auth()->user()->id
+        ])->first();
         if ($cartItem) {
             $cartItem->delete();
         }
-        return redirect()->route('invoice.create');
+        return redirect()->back();
     }
     public function increase($id)
     {
-        $cartItem = Cart::where(['id' => $id])->first();
+        $cartItem = Cart::where([
+            'id' => $id,
+            'type' => 'create',
+            'user_id' => auth()->user()->id
+        ])->first();
         if ($cartItem) {
             $cartItem->increment('quantity');
         }
-        return redirect()->route('invoice.create');
+        return redirect()->back();
     }
     public function decrease($id)
     {
-        $cartItem = Cart::where(['id' => $id])->first();
+        $cartItem = Cart::where([
+            'id' => $id,
+            'type' => 'create',
+            'user_id' => auth()->user()->id
+        ])->first();
         if ($cartItem) {
             if ($cartItem->quantity > 1) {
                 $cartItem->decrement('quantity');
             }
         }
-        return redirect()->route('invoice.create');
+        return redirect()->back();
     }
     public function setQuantity(Request $request, $id)
     {
-        $cartItem = Cart::where(['id' => $id])->first();
+        $cartItem = Cart::where([
+            'id' => $id,
+            'type' => 'create',
+            'user_id' => auth()->user()->id
+        ])->first();
         if (!$cartItem) {
             return redirect()->route('invoice.create')->with('error', 'هەڵەیەک ڕوویدا');
         }
@@ -82,12 +99,16 @@ class CartController extends Controller
             $cartItem->quantity = $newQuantity;
             $cartItem->save();
         }
-        return redirect()->route('invoice.create');
+        return redirect()->back();
     }
     public function setPrice(Request $request, $id)
 
     {
-        $cartItem = Cart::where(['id' => $id])->first();
+        $cartItem = Cart::where([
+            'id' => $id,
+            'type' => 'create',
+            'user_id' => auth()->user()->id
+        ])->first();
         if (!$cartItem) {
             return redirect()->route('invoice.create')->with('error', 'هەڵەیەک ڕوویدا');
         }
@@ -100,14 +121,15 @@ class CartController extends Controller
             $cartItem->unitPrice = $newPrice;
             $cartItem->save();
         }
-        return redirect()->route('invoice.create');
+        return redirect()->back();
     }
     public function addInvoice(Request $request)
     {
-        $cartItems = Cart::where('user_id', auth()->user()->id)->get();
+
+        $cartItems = Cart::where(['user_id' => auth()->user()->id, 'type' => 'create'])->get();
         if ($cartItems->count() > 0) {
             $invoiceNumber = $request->filled('invoiceNumber') ? $request->invoiceNumber : null;
-    
+
             if ($invoiceNumber) {
                 if (Invoice::where('invoiceNumber', $invoiceNumber)->exists()) {
                     return redirect()->route('invoice.create')->with('error', 'پێشتر ژمارەی وەسڵ بەکارهاتووە');
@@ -117,19 +139,19 @@ class CartController extends Controller
                     $invoiceNumber = rand();
                 } while (Invoice::where('invoiceNumber', $invoiceNumber)->exists());
             }
-    
+
             foreach ($cartItems as $cartItem) {
                 if (is_null($cartItem->unitPrice) || $cartItem->unitPrice == 0) {
                     return redirect()->route('invoice.create')->with('error', 'پێویستە نرخی هاموو مادەکان دیاری بکەی');
                 }
             }
-    
+
             $invoice = Invoice::create([
                 'user_id' => auth()->user()->id,
                 'invoiceNumber' => $invoiceNumber,
                 'date' => now(),
             ]);
-    
+
             $totalAmount = 0;
             foreach ($cartItems as $cartItem) {
                 $material = Material::find($cartItem->material_id);
@@ -143,14 +165,12 @@ class CartController extends Controller
                 $totalAmount += $invoiceItem->subTotal;
                 $invoice->totalAmount = $totalAmount;
                 $invoice->update();
-    
                 $cartItem->delete();
             }
-    
+
             return redirect()->route('invoice.index')->with('message', 'وەسڵەکە بە سەرکەوتووی زیادکرا');
         }
-    
+
         return redirect()->back()->with('error', 'هیچ مادەیەک نادۆزرایەوە بۆ زیادکردن');
     }
-    
 }
