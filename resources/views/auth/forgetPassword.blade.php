@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
 
 <head>
     <meta charset="utf-8">
@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body class="bg-slate-900 h-screen overflow-auto flex justify-center items-center ">
+<body class="bg-slate-900 font-kurdish h-screen overflow-auto flex justify-center items-center ">
     @if ($errors->any())
         @foreach ($errors->all() as $error)
             @php
@@ -35,7 +35,7 @@
                         class="text-xl font-bold leading-tight tracking-tight text-gray-300 md:text-2xl dark:text-gray-400">
                         Reset Password
                     </h1>
-                    <p class="text-black text-sm">ئێمە لینکێک دەنێرین بۆ ئیمێڵەکەت، لەڕیگەی ئەو لینکەوە دەتوانیت وشەی نهێنیت بگۆڕیت</p>
+                    <p class="text-black text-base">ئێمە لینکێک دەنێرین بۆ ئیمێڵەکەت، لەڕیگەی ئەو لینکەوە دەتوانیت وشەی نهێنیت بگۆڕیت</p>
                     <form class="space-y-4 md:space-y-4" method="POST" action="{{ route('forget.password.post') }}">
                         @csrf
                         <div>

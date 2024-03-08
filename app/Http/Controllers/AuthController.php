@@ -27,7 +27,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             ActivityService::log('بەکارهێنەر', 'داخلی سیستم بوو', $user->id, "green");
-            return redirect()->intended(route('users.index'))->with('success', 'Logged in successfully');
+            return redirect()->intended(route('users.index'))->with('success', 'داخلی سیستم بووی بە سەرکەوتووی');
         }
 
         return redirect()->back()->withErrors([
@@ -68,7 +68,7 @@ class AuthController extends Controller
    
         Mail::send('emails.resetLink', ['token' => $token], function ($message) use ($request) {
             $message->to($request->email);
-            $message->subject("Reset Password");
+            $message->subject("گۆڕینی وشەی نهێنی");
         });
 
         return view('auth.checkEmail');

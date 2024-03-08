@@ -170,14 +170,14 @@
                 @if (Route::has('forget.password'))
                     <a class="text-sm font-medium text-indigo-600 dark:text-indgo-600 hover:underline dark:text-primary-500"
                         href="{{ route('forget.password') }}">
-                        {{ __('Forgot Your Password?') }}
+                        {{ __('وشەی نهێنیت لە بیرکردووە؟') }}
                     </a>
                 @endif
 
             </div>
             <div class="relative z-0 w-full mb-3 group text-center ">
                 <button type="submit"
-                    class="text-black mt-5 bg-indigo-700  focus:outline-none  font-medium rounded text-sm w-full sm:w-2/3 px-5 py-2 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Submit</button>
+                    class="text-black mt-5 bg-indigo-700  focus:outline-none  font-medium rounded text-sm w-full sm:w-2/3 px-5 py-2 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">گۆڕین</button>
             </div>
         </form>
 
