@@ -43,7 +43,6 @@ class ReportController extends Controller
                 'invoices' => $invoices,
             ];
             $pdf = PDF::loadView('pdf.invoice',  compact('data'));
-            return $pdf->stream("slaw.pdf");
             ActivityService::log('ڕیپۆرتەکان', 'ڕیپۆرتێکی وەسڵەکانی دابەزاند', auth()->id(), "green");
             return $pdf->download('invoices report ' . now() . '.pdf');
         }
