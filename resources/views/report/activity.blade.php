@@ -26,7 +26,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="m1 9 4-4-4-4" />
                     </svg>
-                    <p href="#" class="mr-1 text-sm font-medium text-gray-700   dark:text-indigo-400 ">ڕیپۆرتەکان</p>
+                    <p href="#" class="mr-1 text-sm font-medium text-gray-700   dark:text-indigo-400 ">ڕیپۆرتی چالاکیەکان</p>
                 </div>
                 </li>
 
@@ -158,11 +158,43 @@
                                 {{ $activity->user->name }}
                             </th>
                             <td class="px-4 py-4 text-center">
-                                <span class="bg-green-300 text-green-700 p-1 rounded font-semibold">
-                                    {{ $activity->subject }}</span>
+                                @if ($activity->color === 'red')
+                                    <span class="bg-red-300 text-red-700 p-1 rounded font-semibold">
+                                        {{ $activity->subject }}
+                                    </span>
+                                @elseif ($activity->color === 'green')
+                                    <span class="bg-green-400 text-green-800 p-1 rounded font-semibold">
+                                        {{ $activity->subject }}
+                                    </span>
+                                @elseif ($activity->color === 'orange')
+                                    <span class="bg-orange-300 text-orange-700 p-1 rounded font-semibold">
+                                        {{ $activity->subject }}
+                                    </span>
+                                @else
+                                    <span class="bg-blue-300 text-blue-700 p-1 rounded font-semibold">
+                                        {{ $activity->subject }}
+                                    </span>
+                                @endif
+
+
                             </td>
                             <td class="px-4 py-4 text-center">
-                                {{ $activity->action }}
+                                @if ($activity->color === 'red')
+                                    <span class="text-red-500">
+                                        {{ $activity->action }}
+                                    </span>
+                                @elseif ($activity->color === 'green')
+                                    <span class="text-green-500">
+                                        {{ $activity->action }}
+                                    </span>
+                                @elseif ($activity->color === 'orange')
+                                    <span class="text-orange-400">
+                                        {{ $activity->action }}
+                                    </span>
+                                @else
+                                    <span class="text-blue-400">
+                                        {{ $activity->action }}
+                                    </span @endif
                             </td>
                             <td class="px-4 py-4 text-center">
                                 {{ $activity->created_at }}

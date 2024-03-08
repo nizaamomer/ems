@@ -61,7 +61,8 @@
                     <label for="image" class="cursor-pointer">
                         <input type="file" name="image" id="image"
                             class="w-full h-full absolute inset-0 opacity-0 cursor-pointer" onchange="displayImage(this)" />
-                        <div id="circleIcon" class="w-7 h-7 text-2xl text-center text-indigo-300 bg-center bg-cover bg-no-repeat">
+                        <div id="circleIcon"
+                            class="w-7 h-7 text-2xl text-center text-indigo-300 bg-center bg-cover bg-no-repeat">
                             {{ getFirst(auth()->user()->name) }}
                         </div>
                         <img id="selectedImage" class="w-full h-full absolute inset-0 object-cover"
@@ -184,3 +185,10 @@
     </div>
 
 @endsection
+{{-- @if ($errors->any())
+    @foreach ($errors->all() as $error)
+        @php
+            flash()->option('position', 'top-left')->addWarning($error);
+        @endphp
+    @endforeach
+@endif --}}

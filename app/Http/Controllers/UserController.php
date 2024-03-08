@@ -47,28 +47,17 @@ class UserController extends Controller
         return view('user.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         $data = $request->validated();
-        dd($data);
-
-        if ($request->hasFile('image')) {
-            if ($user->image) {
-                $oldImagePath = public_path('user_images/')  . $user->image;
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-            $image = $request->file('image')->hashName();
-            $request->file('image')->move('user_images', $image);
-            $data["image"] = $image;
+        $image = $this->handleImageUpload($request, $user);
+        if ($image) {
+            $data['image'] = $image;
         }
-
         $user->update($data);
         ActivityService::log('بەکارهێنەر', 'زانیاریەکانی بەکەرهێنارێکی تازاکردەوە', auth()->id(), 'green');
         return redirect()->route('users.index')->with('success', 'زانیاریەکانی بەکارهێنەر تازەکرایەوە بە سەرکەوتووی');
     }
-
 
     public function destroy(User $user, Request $request)
     {
@@ -81,7 +70,6 @@ class UserController extends Controller
         }
         $user->delete();
         ActivityService::log('بەکارهێنەر', 'بەکارهێنەرێکی سڕیەوە', auth()->id(), "red");
-
         return redirect()->back()->with('success', 'بەکارهێنەر سڕایەوە بە سەرکەوتووی');
     }
 
@@ -97,25 +85,17 @@ class UserController extends Controller
             return back()->with('error', 'User not found');
         }
         if ($request->input('num') == 'form1') {
-
             $data = $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,' . $user->id,
                 'image' => 'sometimes|image|mimes:png,jpg,jpeg',
             ]);
-
-            if ($request->hasFile('image')) {
-                $oldImagePath = 'user_images/' . $user->image;
-                if (file_exists($oldImagePath) && is_file($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-                $image = $request->file('image')->hashName();
-                $request->file('image')->move('user_images', $image);
-                $user->image = $image;
+            $image = $this->handleImageUpload($request, $user);
+            if ($image) {
+                $data['image'] = $image;
             }
             $user->update($data);
             ActivityService::log('بەکارهێنەر', 'زانیاریەکانی پڕۆفایلی خۆی تازەکردەوە', auth()->id(), "green");
-
             return back()->with('success', 'زانیاریەکانت نوێ کرایەوە بە سەرکەوتووی');
         } elseif ($request->input('num') == 'form2') {
             $data = $request->validate([
@@ -132,5 +112,18 @@ class UserController extends Controller
         } else {
             return back()->with('error', 'هەڵەیەک ڕووویدا، دواتر هەوڵبدەوە...');
         }
+    }
+    private function handleImageUpload(Request $request, User $user)
+    {
+        if ($request->hasFile('image')) {
+            $oldImagePath = 'user_images/' . $user->image;
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+            $image = $request->file('image')->hashName();
+            $request->file('image')->move('user_images', $image);
+            return $image;
+        }
+        return null;
     }
 }

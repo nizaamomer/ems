@@ -155,3 +155,10 @@
     </div>
 
 @endsection
+{{-- @if ($errors->any())
+    @foreach ($errors->all() as $error)
+        @php
+            flash()->option('position', 'top-left')->addWarning($error);
+        @endphp
+    @endforeach
+@endif --}}
