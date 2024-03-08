@@ -15,13 +15,18 @@ class DashboardController extends Controller
         $users = User::count();
         $materials = Material::where("active", true)->count();
         $invoices = Invoice::count();
-    
         $expenseToThisMonth = Invoice::whereBetween('date', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth()
         ])->sum('totalAmount');
-    
-        return view('dashboard', compact('invoices', 'materials', 'users', 'expenseToThisMonth'));
+        return view(
+            'dashboard',
+            compact(
+                'invoices',
+                'materials',
+                'users',
+                'expenseToThisMonth'
+            )
+        );
     }
-    
 }

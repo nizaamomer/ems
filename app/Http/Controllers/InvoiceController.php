@@ -20,10 +20,8 @@ class InvoiceController extends Controller
             ->OfSearch($request->search)
             ->OfDateRange($request->date_range, $request->custom_start_date, $request->custom_end_date);
         $invoices = $invoicesQuery->get();
-
         $users = User::all();
         ActivityService::log('وەسڵەکان', 'سەیری لیستی وەسڵەکانی کرد', auth()->id(), "blue");
-
         return view('invoice.index', compact('invoices', 'users'));
     }
     public function create(Request $request)
@@ -35,7 +33,6 @@ class InvoiceController extends Controller
             ->orderByDesc('id')
             ->get();
         ActivityService::log('وەسڵەکان', 'فۆرمی زیادکردنی وەسڵی کردەوە', auth()->id(), "orange");
-
         return view(
             'invoice.create',
             compact('materials', 'cartItems',)
@@ -51,7 +48,6 @@ class InvoiceController extends Controller
         if ($cartItem) {
             $cartItem->delete();
         }
-
         return redirect()->back();
     }
     public function show($id)

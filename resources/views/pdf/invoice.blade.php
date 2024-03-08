@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="ckb" dir="rtl">
+<html>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Invoice #6</title>
+
     <style>
         html,
         body {
             margin: 10px;
             padding: 10px;
-            direction: rtl;
-            font-family: "Vazirmatn", sans-serif;
+            font-family: "vazirmatn", sans-serif;
         }
 
         table {
@@ -91,7 +90,8 @@
     </style>
 </head>
 
-<body style="font-family: nrt">
+<body>
+
     <table class="order-details">
         <thead>
             <tr>

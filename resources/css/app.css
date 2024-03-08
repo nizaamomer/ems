@@ -10,6 +10,21 @@
   }
   
   @font-face {
+    font-family: 'arabic';
+    font-style: normal;
+    font-weight: 200;
+    src: url('../../public/fonts/arabic.ttf') format('truetype');
+  }
+  
+  
+  @font-face {
+    font-family: 'nrt';
+    font-style: normal;
+    font-weight: 200;
+    src: url('../../public/fonts/nrt.ttf') format('truetype');
+  }
+  
+  @font-face {
     font-family: 'Vazirmatn';
     font-style: normal;
     font-weight: 200;

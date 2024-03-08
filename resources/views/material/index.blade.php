@@ -178,8 +178,6 @@
                         <tr class="dark:bg-gray-800 bg-white">
                             <td colspan="100%" class=" p-4">
                                 <div class="w-5/6 mx-auto " dir="ltr">
-
-                                    {{-- {!! $materials->links('myPaginate') !!} --}}
                                     {!! $materials->links('pagination.myPaginate') !!}
 
                                 </div>

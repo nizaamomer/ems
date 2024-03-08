@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('invoice', InvoiceController::class);
     Route::get('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice');
-    Route::post('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice');
+    Route::post('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice.post');
     Route::get('/report/activity', [ReportController::class, 'activity'])->name('report.activity');
 });
 
