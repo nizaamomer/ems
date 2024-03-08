@@ -13,7 +13,8 @@
 
         margin: 10px;
         padding: 10px;
-        font-family:"vazirmatn", sans-serif;
+        font-family: "vazirmatn", sans-serif;
+        direction: rtl;
     }
 
     table {
