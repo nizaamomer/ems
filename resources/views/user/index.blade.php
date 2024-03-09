@@ -57,7 +57,7 @@
                         placeholder="....بگەڕێ بەدوای بەکارهێنەر">
                 </form>
             </div>
-            @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'recorder')
+            @if (auth()->user()->Role === 'admin' || auth()->user()->Role === 'recorder')
                 <a href="{{ route('users.create') }}"
                     class="text-sm bg-indigo-600 px-4 hidden sm:block py-2 rounded-md font-semibold text-white hover:bg-indigo-700 dark:text-gray-900">
                     زیادکردنی بەکارهێنەر
@@ -99,7 +99,7 @@
                         <th scope="col" class="px-6 py-3">
                             درووست کراوە
                         </th>
-                        @if (auth()->user()->permissions === 'admin')
+                        @if (auth()->user()->Role === 'admin')
                             <th scope="col" class="px-6 py-3">
                                 کردارەکان
                             </th>
@@ -135,11 +135,11 @@
                             </th>
                             <td class="px-6 py-4 capitalize text-center">
 
-                                @if ($user->permissions === 'admin')
+                                @if ($user->Role === 'admin')
                                     ئەدمین
-                                @elseif ($user->permissions === 'recorder')
+                                @elseif ($user->Role === 'recorder')
                                     ئیدیتەر
-                                @elseif ($user->permissions === 'viewer')
+                                @elseif ($user->Role === 'viewer')
                                     بینەر
                                 @else
                                     هیچ رۆڵێکت نیە
@@ -150,7 +150,7 @@
                             <td class="px-6 py-4 text-center">
                                 {{ $user->created_at->diffForHumans() }}
                             </td>
-                            @if (auth()->user()->permissions === 'admin')
+                            @if (auth()->user()->Role === 'admin')
                                 <td
                                     class="px-6 py-4 text-center flex justify-evenly space-x-reverse space-x-4 align-middle">
 

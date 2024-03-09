@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -22,7 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'image',
-       'permissions'
+        'Role'
     ];
 
     /**
@@ -54,5 +55,8 @@ class User extends Authenticatable
             }
         );
         return $query;
+    }
+    public function hasRole($role){
+        return $this->Role == $role;
     }
 }

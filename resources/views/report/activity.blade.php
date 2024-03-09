@@ -123,7 +123,7 @@
 
 
             </form>
-            @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'viewer')
+            @if (auth()->user()->Role === 'admin' || auth()->user()->Role === 'viewer')
                 <a type="button"
                     class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                     href="{{ route('report.activity', ['generateActivityPdf' => true]) }}"> PDF</a>

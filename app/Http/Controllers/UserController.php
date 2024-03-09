@@ -65,7 +65,7 @@ class UserController extends Controller
         if (file_exists($imagePath) && is_file($imagePath)) {
             unlink($imagePath);
         }
-        if ($user->permissions == "admin") {
+        if ($user->Role == "admin") {
             return redirect()->back()->with('error', 'ناتوانیت ئەدمین بسڕیەوە');
         }
         $user->delete();

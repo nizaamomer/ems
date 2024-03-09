@@ -16,33 +16,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('profile/edit', [UserController::class, 'profileEdit'])->name('profile.edit');
     Route::post('profile/update/{id}/', [UserController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::resource('users', UserController::class);
-    Route::resource('material', MaterialController::class)->except("show");
+    Route::resource('users', UserController::class)->middleware('admin');
+    Route::resource('material', MaterialController::class)
+        ->except('show')->middleware('recorder:index,create,store');
+    Route::resource('invoice', InvoiceController::class)->except(['store', 'update'])->middleware('recorder:index,create');
     Route::controller(CartController::class)->group(function () {
-        Route::post('cart', 'addToCart')->name('cart.addToCart');
-        Route::post('cart/destroy/{id}', 'destroy')->name('cart.destroy');
-        Route::post('cart/decrease/{id}', 'decrease')->name('cart.decrease');
-        Route::post('cart/increase/{id}', 'increase')->name('cart.increase');
-        Route::post('cart/setQuantity/{id}', 'setQuantity')->name("cart.setQuantity");
-        Route::post('cart/setPrice/{id}', 'setPrice')->name("cart.setPrice");
-        Route::post('cart/addInvoice', 'addInvoice')->name('cart.addInvoice');
+        Route::post('cart', 'addToCart')->name('cart.addToCart')->middleware('recorder:addToCart');
+        Route::post('cart/destroy/{id}', 'destroy')->name('cart.destroy')->middleware('recorder:destroy');
+        Route::post('cart/decrease/{id}', 'decrease')->name('cart.decrease')->middleware('recorder:decrease');
+        Route::post('cart/increase/{id}', 'increase')->name('cart.increase')->middleware('recorder:increase');
+        Route::post('cart/setQuantity/{id}', 'setQuantity')->name("cart.setQuantity")->middleware('recorder:setQuantity');
+        Route::post('cart/setPrice/{id}', 'setPrice')->name("cart.setPrice")->middleware('recorder:setPrice');
+        Route::post('cart/addInvoice', 'addInvoice')->name('cart.addInvoice')->middleware('recorder:addInvoice');
     });
     Route::controller(InvoiceController::class)->group(function () {
-        Route::post('inv', 'addToCart')->name('inv.addToCart');
-        Route::post('inv/destroyy/{id}', 'destroyy')->name('inv.destroy');
-        Route::post('inv/decrease/{id}', 'decrease')->name('inv.decrease');
-        Route::post('inv/increase/{id}', 'increase')->name('inv.increase');
-        Route::post('inv/setQuantity/{id}', 'setQuantity')->name("inv.setQuantity");
-        Route::post('inv/setPrice/{id}', 'setPrice')->name("inv.setPrice");
-        Route::post('inv/UpdateInvoice', 'UpdateInvoice')->name('inv.UpdateInvoice');
+        Route::post('inv', 'addToCart')->name('inv.addToCart')->middleware('recorder:addToCart');
+        Route::post('inv/destroyy/{id}', 'destroyy')->name('inv.destroy')->middleware('recorder:destroyy');;
+        Route::post('inv/decrease/{id}', 'decrease')->name('inv.decrease')->middleware('recorder:decrease');
+        Route::post('inv/increase/{id}', 'increase')->name('inv.increase')->middleware('recorder:increase');
+        Route::post('inv/setQuantity/{id}', 'setQuantity')->name("inv.setQuantity")->middleware('recorder:setQuantity');
+        Route::post('inv/setPrice/{id}', 'setPrice')->name("inv.setPrice")->middleware('recorder:setPrice');
+        Route::post('inv/UpdateInvoice', 'UpdateInvoice')->name('inv.UpdateInvoice')->middleware('recorder:UpdateInvoice');
     });
-
-    Route::resource('invoice', InvoiceController::class);
-    Route::get('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice');
-    Route::post('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice.post');
-    Route::get('/report/activity', [ReportController::class, 'activity'])->name('report.activity');
+    Route::get('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice')->middleware('viewer:invoice');
+    Route::post('/report/invoice', [ReportController::class, 'invoice'])->name('report.invoice.post')->middleware('viewer:invoice');;
+    Route::get('/report/activity', [ReportController::class, 'activity'])->name('report.activity')->middleware('viewer:activity');
 });
-
 Route::get('login', [AuthController::class, 'index'])->name('index');
 Route::get('login', [AuthController::class, 'index'])->name('index');
 Route::post('login', [AuthController::class, 'login'])->name('login');

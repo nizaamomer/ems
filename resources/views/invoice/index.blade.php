@@ -140,7 +140,7 @@
                     </div>
 
                 </div>
-                @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'recorder')
+                @if (auth()->user()->Role === 'admin' || auth()->user()->Role === 'recorder')
                     <a href="{{ route('invoice.create') }}"
                         class="bg-green-500 hidden sm:block text-black text-center px-4 py-1.5 w-full rounded cursor-pointer">
                         زیادکردنی وەسڵ
@@ -179,7 +179,7 @@
                         <th scope="col" class="px-4 py-3">
                             ژمارەی مادەکان
                         </th>
-                        @if (auth()->user()->permissions === 'admin')
+                        @if (auth()->user()->Role === 'admin')
                             <th scope="col" class="px-4 py-3">
                                 کردارەکان
                             </th>
@@ -212,7 +212,7 @@
                                 </span>
                             </td>
 
-                            @if (auth()->user()->permissions === 'admin')
+                            @if (auth()->user()->Role === 'admin')
                                 <td
                                     class="px-4 py-4 text-center flex justify-evenly space-x-4 space-x-reverse align-middle">
 

@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
             return [
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users,email',
-                'permissions' => 'required',
+                'Role' => 'required',
                 'image' => 'sometimes|mimes:png,jpg,jpeg',
                 'password' => 'required|confirmed|min:8',
             ];
@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
             return [
                 'name' => 'required|min:3',
                 'email' => 'required|string|email|max:255|unique:users,email,' . $this->user->id,
-                'permissions' => 'required',
+                'Role' => 'required',
                 'image' => 'sometimes|mimes:png,jpg,jpeg',
     
             ];

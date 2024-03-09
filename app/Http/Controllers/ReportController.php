@@ -50,23 +50,26 @@ class ReportController extends Controller
 
         return view('report.invoice', compact('users', 'invoices'));
     }
-
-
     public function activity(Request $request)
     {
-
         $search = $request->query('search');
         $date_range = $request->query('date_range');
         $custom_start_date = $request->query('custom_start_date');
         $custom_end_date = $request->query('custom_end_date');
         $user_id = $request->query('user_id');
-
         $activities = Activity::with('user')
             ->OfUser($user_id)
             ->OfDateRange($date_range, $custom_start_date, $custom_end_date)
             ->orderByDesc('id')->get();
+
         $users = User::all();
         if ($request->has('generateActivityPdf')) {
+            $activities = Activity::with('user')
+                ->OfUser($user_id)
+                ->OfDateRange($date_range, $custom_start_date, $custom_end_date)
+                ->orderByDesc('id')->get();
+
+
             $pdf = PDF::loadView('pdf.activity', compact('activities'));
             ActivityService::log('ڕیپۆرتەکان', 'ڕیپۆرتێکی ئەکتیڤیتیەکانی دابەزاند', auth()->id(), "green");
             return $pdf->download('activities_report_' . now() . '.pdf');

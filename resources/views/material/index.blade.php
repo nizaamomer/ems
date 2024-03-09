@@ -58,7 +58,7 @@
                         placeholder="بگەڕێ بە دوای مادە">
                 </form>
             </div>
-            @if (auth()->user()->permissions === 'admin' || auth()->user()->permissions === 'recorder')
+            @if (auth()->user()->Role === 'admin' || auth()->user()->Role === 'recorder')
                 <a href="{{ route('material.create') }}"
                     class="text-sm bg-indigo-600 px-4 hidden sm:block py-2 rounded-md font-semibold text-white hover:bg-indigo-700 dark:text-gray-900">
                     زیادکردنی مادە
@@ -87,7 +87,7 @@
                         <th scope="col" class="px-6 py-3">
                             کۆی مادە
                         </th>
-                        @if (auth()->user()->permissions === 'admin')
+                        @if (auth()->user()->Role === 'admin')
                             <th scope="col" class="px-6 py-3">
                                 کردارەکان
                             </th>
@@ -112,7 +112,7 @@
                                     {{ $material->code }}
                                 </span>
                             </td>
-                            @if (auth()->user()->permissions === 'admin')
+                            @if (auth()->user()->Role === 'admin')
                                 <td class="px-6 py-4 text-right flex justify-evenly space-x-reverse space-x-4 align-middle">
 
 

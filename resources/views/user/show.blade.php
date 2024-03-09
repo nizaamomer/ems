@@ -105,11 +105,11 @@
                                 پلە
                             </div>
                             <div class="inline-flex items-center w-7/12  text-gray-900 dark:text-gray-400">
-                                @if ($user->permissions === 'admin')
+                                @if ($user->Role === 'admin')
                                     ئەدمین
-                                @elseif ($user->permissions === 'recorder')
+                                @elseif ($user->Role === 'recorder')
                                     ئیدیتەر
-                                @elseif ($user->permissions === 'viewer')
+                                @elseif ($user->Role === 'viewer')
                                     بینەر
                                 @else
                                     هیچ رۆڵێکت نیە
