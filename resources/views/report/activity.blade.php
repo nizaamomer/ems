@@ -124,9 +124,10 @@
 
             </form>
             @if (auth()->user()->Role === 'admin' || auth()->user()->Role === 'viewer')
-                <a type="button"
-                    class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                    href="{{ route('report.activity', ['generateActivityPdf' => true]) }}"> PDF</a>
+            <a type="button"
+            class="block text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+            href="{{ route('report.activity', ['generateActivityPdf' => true, 'user_id' => request('user_id'), 'date_range' => request('date_range'), 'custom_start_date' => request('custom_start_date'), 'custom_end_date' => request('custom_end_date')]) }}">PDF</a>
+        
             @endif
         </div>
     </div>

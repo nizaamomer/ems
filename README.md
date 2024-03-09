@@ -30,6 +30,7 @@ and login with my email you see it....
 
 <br>
 when you set price for materials or update quantity , just leave input after automatically will updated....
+
 <br>
 <br>
 thanks:)

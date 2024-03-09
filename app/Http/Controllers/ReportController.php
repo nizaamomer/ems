@@ -17,14 +17,11 @@ class ReportController extends Controller
      */
     public function invoice(Request $request)
     {
-        $search = $request->query('search');
-        $date_range = $request->query('date_range');
-        $custom_start_date = $request->query('custom_start_date');
-        $custom_end_date = $request->query('custom_end_date');
-        $user_id = $request->query('user_id');
-        $supplier_id = $request->query('supplier_id');
-        $status = $request->query('status');
-
+        $search = $request->input('search');
+        $date_range = $request->input('date_range');
+        $custom_start_date = $request->input('custom_start_date');
+        $custom_end_date = $request->input('custom_end_date');
+        $user_id = $request->input('user_id');
         $message = $request->input('message');
         $withItems = $request->has('withItems');
         $showNote = $request->has('showNote');
@@ -52,23 +49,18 @@ class ReportController extends Controller
     }
     public function activity(Request $request)
     {
-        $search = $request->query('search');
-        $date_range = $request->query('date_range');
-        $custom_start_date = $request->query('custom_start_date');
-        $custom_end_date = $request->query('custom_end_date');
-        $user_id = $request->query('user_id');
+        $date_range = $request->input('date_range');
+        $custom_start_date = $request->input('custom_start_date');
+        $custom_end_date = $request->input('custom_end_date');
+        $user_id = $request->input('user_id');
         $activities = Activity::with('user')
             ->OfUser($user_id)
             ->OfDateRange($date_range, $custom_start_date, $custom_end_date)
             ->orderByDesc('id')->get();
 
+
         $users = User::all();
         if ($request->has('generateActivityPdf')) {
-            $activities = Activity::with('user')
-                ->OfUser($user_id)
-                ->OfDateRange($date_range, $custom_start_date, $custom_end_date)
-                ->orderByDesc('id')->get();
-
 
             $pdf = PDF::loadView('pdf.activity', compact('activities'));
             ActivityService::log('ڕیپۆرتەکان', 'ڕیپۆرتێکی ئەکتیڤیتیەکانی دابەزاند', auth()->id(), "green");
